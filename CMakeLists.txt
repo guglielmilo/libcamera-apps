@@ -1,3 +1,5 @@
+set(CMAKE_TOOLCHAIN_FILE rpi-toolchain.cmake)
+
 cmake_minimum_required(VERSION 3.6)
 
 project(libcamera-apps)
@@ -44,21 +46,6 @@ set(CPACK_SOURCE_IGNORE_FILES "/\.git*;/build;")
 include(CPack)
 
 find_package(PkgConfig REQUIRED)
-
-# Manually link local libcamera
-set(LIBCAMERA_VERSION 0.0.0)
-set(LIBCAMERA_LINK_LIBRARIES ${CMAKE_SYSROOT}/usr/local/lib/${CMAKE_LIBRARY_ARCHITECTURE}/libcamera.so ${CMAKE_SYSROOT}/usr/local/lib/${CMAKE_LIBRARY_ARCHITECTURE}/libcamera-base.so)
-set(LIBCAMERA_INCLUDE_DIRS ${CMAKE_SYSROOT}/usr/local/include/libcamera)
-
-message(STATUS "libcamera version: ${LIBCAMERA_VERSION}")
-message(STATUS "libcamera libraries: ${LIBCAMERA_LINK_LIBRARIES}")
-message(STATUS "libcamera include path: ${LIBCAMERA_INCLUDE_DIRS}")
-
-include_directories(${CMAKE_SOURCE_DIR} ${LIBCAMERA_INCLUDE_DIRS})
-
-# Manually include missing paths
-include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_SYSROOT}/usr/include/${CMAKE_LIBRARY_ARCHITECTURE})
-include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_SYSROOT}/usr/include/libdrm)
 
 add_subdirectory(core)
 add_subdirectory(encoder)

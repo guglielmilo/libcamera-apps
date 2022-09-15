@@ -18,6 +18,26 @@ set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wl,-rpath-link,${CMAKE_SYSROOT}/usr
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wl,-rpath-link,${CMAKE_SYSROOT}/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE} -L${CMAKE_SYSROOT}/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}")
 
 SET(BIN_PREFIX ${tools}/bin/arm-linux-gnueabihf)
-
 SET(CMAKE_C_COMPILER ${BIN_PREFIX}-gcc)
 SET(CMAKE_CXX_COMPILER ${BIN_PREFIX}-g++)
+
+set(ENABLE_COMPILE_FLAGS_FOR_TARGET "armhf")
+
+# Manually link local libcamera
+set(LIBCAMERA_VERSION 0.0.0)
+set(LIBCAMERA_LINK_LIBRARIES ${CMAKE_SYSROOT}/usr/local/lib/${CMAKE_LIBRARY_ARCHITECTURE}/libcamera.so ${CMAKE_SYSROOT}/usr/local/lib/${CMAKE_LIBRARY_ARCHITECTURE}/libcamera-base.so)
+set(LIBCAMERA_INCLUDE_DIRS ${CMAKE_SYSROOT}/usr/local/include/libcamera)
+message(STATUS "libcamera version: ${LIBCAMERA_VERSION}")
+
+include_directories(${CMAKE_SOURCE_DIR} ${LIBCAMERA_INCLUDE_DIRS})
+
+# Manually include missing paths
+include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_SYSROOT}/usr/include/${CMAKE_LIBRARY_ARCHITECTURE})
+include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_SYSROOT}/usr/include/libdrm)
+include_directories(${CMAKE_SOURCE_DIR} lib)
+
+# Fix for spdlog
+set(CMAKE_THREAD_LIBS_INIT "-lpthread")
+
+# Disable QT
+set(ENABLE_QT 0)
