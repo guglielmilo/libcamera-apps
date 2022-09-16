@@ -27,7 +27,7 @@ using namespace std::chrono_literals;
 class PostProcessingStage;
 using PostProcessorCallback = std::function<void(CompletedRequestPtr &)>;
 using StreamConfiguration = libcamera::StreamConfiguration;
-typedef std::unique_ptr<PostProcessingStage> StagePtr;
+typedef std::shared_ptr<PostProcessingStage> StagePtr;
 
 class PostProcessor
 {
@@ -51,6 +51,8 @@ public:
 	void Stop();
 
 	void Teardown();
+
+	const std::vector<StagePtr>& GetStages() const { return stages_; }
 
 private:
 	PostProcessingStage *createPostProcessingStage(char const *name);

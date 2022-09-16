@@ -91,6 +91,7 @@ public:
 	virtual ~LibcameraApp();
 
 	Options *GetOptions() const { return options_.get(); }
+	const PostProcessor& GetPostProcessor() const { return post_processor_; }
 
 	std::string const &CameraId() const;
 	void OpenCamera();
